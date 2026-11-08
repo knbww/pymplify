@@ -1,7 +1,7 @@
 # pymplify-text
 
 Text vectorization in one call through **scikit-learn**. Part of the Pymplify
-ecosystem. Python 3.10+, MIT. Depends on `pymplify-core>=0.1.0,<0.2` and
+ecosystem. Python 3.10+, MIT. Depends on `pymplify-core>=0.2.0,<0.3` and
 `scikit-learn>=1.4.2,<2`.
 
 Run from the repository root:
@@ -45,3 +45,20 @@ Operation failures are wrapped in `BackendError`, with the original exception in
 
 Upstream documentation:
 [TfidfVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html).
+
+## Adapter discovery
+
+The installed distribution advertises a `text` adapter with a `vectorize` operation
+in the `pymplify.adapters` entry point group. Its upstream library is `scikit-learn`,
+with the alias `sklearn`. Existing direct imports continue to work independently.
+
+```python
+from pymplify_core import discover_adapters
+
+catalog = discover_adapters(strict=True)
+result = catalog.run("text", "vectorize", ["small model", "simple model"])
+```
+
+Discovery imports the lightweight factory but does not import scikit-learn until
+an operation is executed. Install this package first; placing its source directory
+on `PYTHONPATH` does not create installed entry point metadata.

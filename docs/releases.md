@@ -23,24 +23,30 @@ python -m build packages/pymplify-core --outdir dist/pymplify-core
 python -m twine check dist/pymplify-core/*
 ```
 
-For `pymplify-text`, change the path. For the first publication, core must be
-available before text because text declares it as a dependency.
+For text or tabular, change the path. Publish core before an adapter requiring its
+new contract version. Core and text are currently 0.2.0; tabular starts at 0.1.0.
 
 ## Artifact verification
 
-Install the wheel in a clean environment and run the example. To check both
+Install the wheel in a clean environment and run the example. To check all three
 packages locally before their first publication:
 
 ```bash
-python -m build packages/pymplify-core --outdir dist
-python -m build packages/pymplify-text --outdir dist
+python -m build packages/pymplify-core --outdir dist/expansion
+python -m build packages/pymplify-text --outdir dist/expansion
+python -m build packages/pymplify-tabular --outdir dist/expansion
 python -m venv .venv-release
 # Linux/macOS; Windows: .venv-release\Scripts\python.exe
-.venv-release/bin/python -m pip install --find-links=dist pymplify-text==0.1.0
+# POSIX shell; PowerShell can pass each wheel path explicitly.
+.venv-release/bin/python -m pip install dist/expansion/*.whl
 .venv-release/bin/python examples/text_vectors.py
+.venv-release/bin/python examples/tabular_scaling.py
+.venv-release/bin/python examples/adapter_catalog.py
 ```
 
-CI explicitly installs both wheels from local paths, then runs the example.
+Use a fresh output directory so older wheels cannot conflict with the versions
+being verified. CI explicitly installs all three wheels from local paths and runs
+the direct examples and catalog discovery example.
 The default build also verifies that a wheel can be built from the sdist.
 
 ## Publishing
@@ -48,4 +54,4 @@ The default build also verifies that a wheel can be built from the sdist.
 Publishing is a separate action by the project owner after artifact verification,
 first to TestPyPI and then to PyPI. This foundation does not include automatic
 publishing or configured external accounts. Secrets must not be stored in the
-repository. The recommended tag format for a distribution is `pymplify-text-v0.1.0`.
+repository. The recommended tag format for a distribution is `pymplify-text-v0.2.0`.

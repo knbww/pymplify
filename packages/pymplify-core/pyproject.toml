@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pymplify-core"
-version = "0.1.0"
-description = "Shared errors and dependency loading for the Pymplify ecosystem."
+version = "0.2.0"
+description = "Adapter contracts, operation catalogs, and shared utilities for Pymplify."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -18,6 +18,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = []
+
+[project.urls]
+Repository = "https://github.com/knbww/pymplify"
+Documentation = "https://github.com/knbww/pymplify/blob/main/docs/catalog-api.md"
+Issues = "https://github.com/knbww/pymplify/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

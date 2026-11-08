@@ -26,7 +26,7 @@ def test_scaffold_creates_an_independent_package_with_valid_metadata(scaffold_ro
     target = new_package.create_package("image-tools", root=scaffold_root)
     metadata = tomllib.loads((target / "pyproject.toml").read_text(encoding="utf-8"))
     assert metadata["project"]["name"] == "pymplify-image-tools"
-    assert metadata["project"]["dependencies"] == ["pymplify-core>=0.1.0,<0.2"]
+    assert metadata["project"]["dependencies"] == ["pymplify-core>=0.2.0,<0.3"]
     assert (target / "src" / "pymplify_image_tools" / "py.typed").exists()
     assert (target / "LICENSE").read_bytes() == (ROOT / "LICENSE").read_bytes()
 

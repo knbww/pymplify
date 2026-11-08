@@ -53,7 +53,7 @@ def main() -> None:
     except (ValueError, FileExistsError) as exc:
         parser.error(str(exc))
     print(f"Created {target}")
-    print("Next: add a backend, public operation, tests, documentation, and a CI entry.")
+    print("Next: add operations, an adapter factory, tests, documentation, and a CI entry.")
 
 
 if __name__ == "__main__":

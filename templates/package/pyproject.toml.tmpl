@@ -11,7 +11,11 @@ requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{name = "Pymplify contributors"}]
-dependencies = ["pymplify-core>=0.1.0,<0.2"]
+dependencies = ["pymplify-core>=0.2.0,<0.3"]
+
+# Enable discovery only after implementing this factory and its operations:
+# [project.entry-points."pymplify.adapters"]
+# $name = "$module.adapter:get_adapter"
 
 [tool.setuptools.packages.find]
 where = ["src"]

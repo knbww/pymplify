@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pymplify-text"
-version = "0.1.0"
+version = "0.2.0"
 description = "One-call text vectorization with access to the original scikit-learn model."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -17,7 +17,15 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-dependencies = ["pymplify-core>=0.1.0,<0.2", "scikit-learn>=1.4.2,<2"]
+dependencies = ["pymplify-core>=0.2.0,<0.3", "scikit-learn>=1.4.2,<2"]
+
+[project.urls]
+Repository = "https://github.com/knbww/pymplify"
+Documentation = "https://github.com/knbww/pymplify/blob/main/docs/text-api.md"
+Issues = "https://github.com/knbww/pymplify/issues"
+
+[project.entry-points."pymplify.adapters"]
+text = "pymplify_text.adapter:get_adapter"
 
 [tool.setuptools.packages.find]
 where = ["src"]

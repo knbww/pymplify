@@ -9,6 +9,10 @@
 - The default call works without a configuration file.
 - The result preserves access to the original model and native backend data.
 - Public functions have annotations and docstrings; packages include `py.typed`.
+- Discoverable packages expose a no-argument factory returning an `Adapter` with
+  named `Operation` objects through the `pymplify.adapters` entry point group.
+- Factories only describe operations; backend loading and processing happen at execution.
+- Direct package APIs remain usable without creating or discovering a catalog.
 
 Do not promise to support every upstream feature through one shortened call.
 Document the supported workflow and preserve original objects for other tasks.
@@ -38,8 +42,11 @@ preserved.
 
 A missing backend raises `MissingDependencyError` with an installation command.
 Errors within a broken backend installation propagate unchanged. Do not catch
-all exceptions indiscriminately: memory errors, interruptions, and unexpected
-upstream failures must remain distinguishable.
+all execution exceptions indiscriminately: memory errors, interruptions, and
+unexpected upstream failures must remain distinguishable. The explicit plugin
+loading boundary records ordinary factory/import failures to isolate broken
+plugins; strict mode raises `AdapterLoadError` with the original cause. Operation
+exceptions pass through the catalog unchanged.
 
 ## Behavior and reproducibility
 
@@ -47,8 +54,10 @@ Do not change global state, the environment, network resources, or the filesyste
 without making it explicit. Document long operations and model downloads in
 future packages. Expose `random_state` or seed controls for stochastic backends.
 Avoid silently selecting a GPU, changing dtype, or converting to dense arrays.
-In v0.1, TF-IDF uses scikit-learn defaults and runs locally.
+TF-IDF and numerical standardization use scikit-learn defaults and run locally.
 
 Verify adapter results against direct upstream calls, model reuse, and invalid
 input behavior. Record tested versions in release notes; a dependency range alone
 does not prove compatibility with every future version.
+
+See [adapter contracts and catalog behavior](catalog-api.md) for naming, discovery, and registration.

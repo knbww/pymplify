@@ -4,7 +4,7 @@ Install Python 3.10+, create a virtual environment, and run from the repository 
 
 ```bash
 python -m pip install -r requirements-dev.txt
-python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text
+python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular
 python -m pytest --cov
 ```
 
@@ -15,7 +15,10 @@ placeholder APIs for capabilities that have not been implemented.
 
 To create a package: `python tools/new_package.py <area>`. The generator only
 creates the structure; implementation, tests, documentation, and CI integration
-are still required.
+are still required. Advertise discovery through the `pymplify.adapters` entry
+point group only after implementing a factory that returns an `Adapter` with
+working `Operation` objects. See [the catalog API](docs/catalog-api.md). Factories
+must defer heavy backend imports and perform no processing during discovery.
 
 When changing an adapter, verify observable behavior: equivalence to a direct
 upstream call, result shape, model reuse, and input errors. Examples must run
@@ -31,6 +34,7 @@ python -m ruff format --check .
 python -m pytest --cov --cov-report=term-missing
 python -m build packages/pymplify-core --outdir dist
 python -m build packages/pymplify-text --outdir dist
+python -m build packages/pymplify-tabular --outdir dist
 python -m twine check dist/*
 ```
 

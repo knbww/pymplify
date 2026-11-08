@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymplify-tabular"
+version = "0.1.0"
+description = "One-call feature standardization with the original scikit-learn model."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Pymplify contributors"}]
+keywords = ["ml", "preprocessing", "pymplify"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = ["pymplify-core>=0.2.0,<0.3", "scikit-learn>=1.4.2,<2"]
+
+[project.urls]
+Repository = "https://github.com/knbww/pymplify"
+Documentation = "https://github.com/knbww/pymplify/blob/main/docs/tabular-api.md"
+Issues = "https://github.com/knbww/pymplify/issues"
+
+[project.entry-points."pymplify.adapters"]
+tabular = "pymplify_tabular.adapter:get_adapter"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pymplify_tabular = ["py.typed"]
