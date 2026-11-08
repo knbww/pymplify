@@ -6,10 +6,10 @@ Pymplify is an independent open-source ecosystem of Python packages that simplif
 existing AI/ML libraries. Each package addresses a specific task, is installed and
 versioned independently, and preserves access to the original tools.
 
-Stage: **v0.2.x — Expansion**, with an experimental API. Installed adapter discovery,
-an operation catalog, text vectorization, and numerical feature standardization
-are implemented. Automatic analysis of arbitrary libraries, steering, and neural
-embeddings are not implemented.
+Stage: **v0.3.x — Automation**, with an experimental API. Installed adapter discovery,
+a workflow catalog, text vectorization, numerical standardization, static source
+analysis, and explicit candidate validation are implemented. Analysis proposes
+changes using documented rules; it does not automatically rewrite arbitrary APIs.
 
 ## Quick start
 
@@ -21,9 +21,10 @@ cd pymplify
 python -m venv .venv
 source .venv/bin/activate
 # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular
+python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular -e ./packages/pymplify-analysis
 python examples/text_vectors.py
 python examples/adapter_catalog.py
+python examples/analyze_workflows.py
 ```
 
 These instructions install from source. The packages in this repository have not
@@ -97,6 +98,41 @@ assert catalog.run("custom", "word_count", "one import one action") == 4
 See the [adapter contract and catalog API](docs/catalog-api.md) for packaging a
 custom adapter so it can be discovered in other applications.
 
+## Analyze code and inspect libraries
+
+```python
+from pymplify_analysis import analyze_code, inspect_library
+
+report = analyze_code("""
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaled = scaler.fit_transform(data)
+""")
+for suggestion in report.suggestions:
+    print(suggestion.explanation)
+    print(suggestion.replacement)
+    print(suggestion.validation_steps)
+
+inventory = inspect_library("pymplify-analysis", max_files=20)
+print([function.name for function in inventory.functions])
+```
+
+The analyzer reads source and installed metadata without importing or executing
+the target. It detects two known adapter workflows and repeated consecutive call
+pairs. `inspect_library` accepts a local Python file/directory, an installed
+distribution name, or an unambiguous installed import name. Reports include source
+locations, caveats, partial-file issues, and truncation.
+
+```bash
+python -m pymplify_analysis code examples/upstream_workflow.py --json
+pymplify-analyze library scikit-learn --max-files 10 --include-private --json
+```
+
+Previews preserve access to fitted state and output bindings; they do not always
+reduce line count. They remain unverified until reviewed and tested. For explicit
+case-based comparisons, use `validate_equivalence` with your own comparator. See
+[the analysis API](docs/analysis-api.md) and [the runnable example](examples/analyze_workflows.py).
+
 ## Principles
 
 - **One Import, One Action:** a useful result in one call.
@@ -113,6 +149,7 @@ custom adapter so it can be discovered in other applications.
 | [`pymplify-core`](packages/pymplify-core/) | `pymplify_core` | Adapter contracts, discovery, catalogs, and shared errors; no ML frameworks | 0.2.0 |
 | [`pymplify-text`](packages/pymplify-text/) | `pymplify_text` | TF-IDF text vectorization through scikit-learn | 0.2.0 |
 | [`pymplify-tabular`](packages/pymplify-tabular/) | `pymplify_tabular` | Numerical feature standardization through scikit-learn | 0.1.0 |
+| [`pymplify-analysis`](packages/pymplify-analysis/) | `pymplify_analysis` | Static source/API inventory, simplification proposals, and opt-in validation | 0.1.0 |
 
 The root `pyproject.toml` contains development settings. The repository root is not
 an installable package; a shared `import pymplify` interface does not exist yet.
@@ -120,12 +157,14 @@ an installable package; a shared `import pymplify` interface does not exist yet.
 ## Current capabilities
 
 Pymplify discovers installed adapters, lists supported operations by library,
-and executes declared workflows. Both built-in adapters use scikit-learn;
+and executes declared workflows. The text and tabular adapters use scikit-learn;
 `sklearn` is an explicit alias. Unknown library names return no matches.
 
-Discovery covers packages that advertise the Pymplify adapter contract. It does
-not discover arbitrary library functions, analyze GitHub repositories, or generate
-simplification suggestions. `require_dependency` only imports a known module.
+Catalog discovery covers packages advertising the Pymplify adapter contract.
+The separate analysis package inventories Python source and offers rule-based
+proposals; it does not infer native/dynamic APIs or fetch GitHub repositories.
+Static name matching does not prove equivalent behavior, and validation covers
+only the cases you provide. `require_dependency` only imports a known module.
 The package generator creates a scaffold; its operations must still be implemented
 and tested by a developer.
 
@@ -134,6 +173,7 @@ packages/
   pymplify-core/       # independent pyproject.toml, src/, tests/, LICENSE
   pymplify-text/       # independent pyproject.toml, src/, tests/, LICENSE
   pymplify-tabular/    # independent pyproject.toml, src/, tests/, LICENSE
+  pymplify-analysis/   # static analysis and explicit validation; no ML dependencies
 docs/                 # architecture, API, roadmap, and releases
 examples/             # runnable examples
 templates/package/    # independent package templates
@@ -153,6 +193,7 @@ python -m pytest --cov --cov-report=term-missing
 python -m build packages/pymplify-core --outdir dist
 python -m build packages/pymplify-text --outdir dist
 python -m build packages/pymplify-tabular --outdir dist
+python -m build packages/pymplify-analysis --outdir dist
 python -m twine check dist/*
 ```
 
@@ -173,6 +214,7 @@ entry point, add dependencies and tests, and include the package in CI. Running 
 - [Adapter contract and catalog API](docs/catalog-api.md)
 - [Text vectorization API](docs/text-api.md)
 - [Tabular preprocessing API](docs/tabular-api.md)
+- [Static analysis and candidate validation](docs/analysis-api.md)
 - [Roadmap](docs/roadmap.md)
 - [Versioning and releases](docs/releases.md)
 - [Contributing](CONTRIBUTING.md)

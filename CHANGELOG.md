@@ -1,6 +1,23 @@
 # Changelog
 
-## Unreleased — Expansion
+## Unreleased — Automation
+
+### pymplify-analysis 0.1.0
+
+- Add read-only source analysis and installed/local library inventories without target imports.
+- Recognize supported TF-IDF/scaler workflows and repeated non-overlapping call pairs.
+- Track import aliases and obvious shadowing; emit evidence, caveats, and unverified previews.
+- Add opt-in candidate comparison on explicit cases with independently copied inputs.
+- Provide Python APIs, a text/JSON CLI, catalog discovery, and bounded file inspection.
+- Test trusted generated previews against native backends and validate no-execution behavior.
+
+### Development and documentation
+
+- Extend installation, CI, isolated imports, wheel verification, examples, and API documentation.
+- Keep core/text at 0.2.0 and tabular at 0.1.0; analysis is independently versioned.
+- Record successful Expansion CI before advancing to the Automation stage.
+
+## Expansion — source versions, not published to PyPI
 
 ### pymplify-core 0.2.0
 

@@ -2,13 +2,13 @@
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = ["packages", "tests"]
-pythonpath = ["packages/pymplify-core/src", "packages/pymplify-text/src", "packages/pymplify-tabular/src"]
+pythonpath = ["packages/pymplify-core/src", "packages/pymplify-text/src", "packages/pymplify-tabular/src", "packages/pymplify-analysis/src"]
 addopts = "--import-mode=importlib -ra --strict-markers --strict-config"
 filterwarnings = ["error"]
 
 [tool.coverage.run]
 branch = true
-source = ["pymplify_core", "pymplify_text", "pymplify_tabular"]
+source = ["pymplify_core", "pymplify_text", "pymplify_tabular", "pymplify_analysis"]
 
 [tool.coverage.report]
 show_missing = true

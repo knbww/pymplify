@@ -19,7 +19,7 @@ including Linux with Python 3.10/3.12/3.14, Windows and macOS with Python 3.12,
 scikit-learn 1.4.2 compatibility, style checks, and distribution installation.
 PyPI publication is separate and has not occurred.
 
-## Current expansion
+## Expansion verification
 
 - Validated `Adapter` and `Operation` contracts in core.
 - Per-instance catalogs and discovery through installed Python entry points.
@@ -30,8 +30,24 @@ PyPI publication is separate and has not occurred.
 - Discovery diagnostics, collision handling, tests, examples, and package templates.
 
 Core and text use version 0.2.0; the new tabular distribution starts at 0.1.0.
+The expansion at commit `c349049` passed
+[all eight CI jobs](https://github.com/knbww/pymplify/actions/runs/42500850224).
 These are source versions; a version bump is not a PyPI publication or a GitHub
-release tag. The updated CI must pass before treating the expansion as verified.
+release tag.
+
+## Current automation
+
+- Independent `pymplify-analysis` 0.1.0 with only a core dependency.
+- Read-only static inspection of Python files, local trees, and installed distributions.
+- Function/method signatures, summaries, locations, file issues, and truncation reports.
+- Import-aware TF-IDF/scaler proposals and repeated consecutive call-pair detection.
+- Unverified previews with assumptions, required packages, and validation steps.
+- Explicit case-based comparison of original and candidate callables.
+- Python API, text/JSON CLI, catalog integration, and trusted-fixture preview tests.
+
+Core/text remain 0.2.0 and tabular remains 0.1.0; independent package versions do
+not have to match the ecosystem stage. Automation is bounded by documented static
+rules, not universal API understanding or automatic source rewriting.
 
 ## Next decisions
 
@@ -39,10 +55,10 @@ The source repository is [knbww/pymplify](https://github.com/knbww/pymplify).
 Before a PyPI release, check distribution names, record compatibility evidence,
 and verify the chosen release artifacts in a clean environment.
 
-Automatic analysis is a separate stage. Start with describing available functions
-and identifying repeated workflows in user-provided code. Proposals should include
-what changes and how to validate equivalence. Do not equate function discovery
-with reliable automatic understanding of every library.
+The next integration stage should connect declared adapter operations while
+preserving native results, explicit model reuse, independent packages, and clear
+failure behavior. Keep broadening analysis rules through real workflows and
+false-positive tests; do not equate static discovery with universal understanding.
 
 Steering, image processing, neural embeddings, and inference remain possible
 adapter directions without promised timelines. Each needs a real user task,

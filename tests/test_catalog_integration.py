@@ -6,7 +6,10 @@ from pymplify_text import vectorize
 
 def test_installed_adapters_are_discovered_and_match_direct_package_calls():
     catalog = discover_adapters(strict=True)
-    assert {"text", "tabular"} <= {adapter.name for adapter in catalog.adapters}
+    assert {"analysis", "text", "tabular"} <= {adapter.name for adapter in catalog.adapters}
+    assert {"analysis"} <= {adapter.name for adapter in catalog.for_library("ast")}
+    report = catalog.run("analysis", "analyze_code", "raise RuntimeError('not executed')")
+    assert report.suggestions == ()
     assert {"text", "tabular"} <= {adapter.name for adapter in catalog.for_library("sklearn")}
     documents = ["small language model", "simple machine learning"]
     vectors = catalog.run("text", "vectorize", documents, max_features=4)

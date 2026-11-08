@@ -4,7 +4,7 @@ Install Python 3.10+, create a virtual environment, and run from the repository 
 
 ```bash
 python -m pip install -r requirements-dev.txt
-python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular
+python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular -e ./packages/pymplify-analysis
 python -m pytest --cov
 ```
 
@@ -35,9 +35,16 @@ python -m pytest --cov --cov-report=term-missing
 python -m build packages/pymplify-core --outdir dist
 python -m build packages/pymplify-text --outdir dist
 python -m build packages/pymplify-tabular --outdir dist
+python -m build packages/pymplify-analysis --outdir dist
 python -m twine check dist/*
 ```
 
 In the change description, explain the problem, resulting behavior, checks
 performed, and limitations. Document public API changes in the documentation and
 CHANGELOG. Contributions included in the project are distributed under MIT terms.
+
+For static analysis rules, test supported patterns and false positives from
+shadowed names, wildcard imports, intervening statements, and control-flow
+boundaries. Never execute target source during analysis. Generated previews must
+remain marked as unverified and include their assumptions and validation steps.
+Test known previews against the native backend using trusted fixtures only.

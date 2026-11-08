@@ -9,6 +9,8 @@ flowchart LR
     User[Python application] --> Catalog[Optional core catalog]
     User --> Text[pymplify-text]
     User --> Tabular[pymplify-tabular]
+    User --> Analysis[pymplify-analysis]
+    Analysis --> Source[AST and installed metadata]
     Catalog -->|installed adapter factory| Text
     Catalog -->|installed adapter factory| Tabular
     Catalog -->|explicit registration| Custom[Custom adapter]
@@ -41,8 +43,18 @@ Dispatch requires an explicit adapter and operation, avoiding ambiguity when
 multiple adapters support one library.
 
 Core does not install packages, search GitHub, or generate integrations. The
-catalog connects already implemented workflows. Automatic source analysis and
-simplification suggestions remain future work.
+catalog connects already implemented workflows.
+
+The optional `pymplify-analysis` package depends only on core. It reads source and
+distribution metadata, inventories syntactic definitions, recognizes supported
+workflow patterns, and identifies repeated call pairs. Target source is never
+executed or edited during inspection. Proposals remain unverified and describe
+both their assumptions and validation steps.
+
+Its separate `validate_equivalence` API executes explicitly supplied callables on
+representative cases using independently copied inputs and a user comparator.
+This is opt-in case evidence, not automatic preview execution or a general proof.
+Python APIs, text/JSON CLI reports, and the `analysis` adapter share these boundaries.
 
 ## Dependencies and configuration
 

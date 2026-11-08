@@ -61,3 +61,12 @@ input behavior. Record tested versions in release notes; a dependency range alon
 does not prove compatibility with every future version.
 
 See [adapter contracts and catalog behavior](catalog-api.md) for naming, discovery, and registration.
+
+## Analysis and validation
+
+Static inspection must never import or execute target source. Suggestions carry
+source evidence, assumptions, and validation steps and remain marked unverified.
+Do not label a name-pattern match as semantically equivalent or automatically
+apply an edit. Execution-based validation requires explicit callables, cases, and
+a domain comparator; its result covers those cases only. See the
+[analysis API](analysis-api.md) for limits and failure behavior.

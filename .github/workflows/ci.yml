@@ -42,11 +42,13 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular
+      - run: python -m pip install -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular -e ./packages/pymplify-analysis
       - run: python -m pytest --cov --cov-report=term-missing
       - run: python examples/text_vectors.py
       - run: python examples/tabular_scaling.py
       - run: python examples/adapter_catalog.py
+      - run: python examples/analyze_workflows.py
+      - run: python -m pymplify_analysis code examples/upstream_workflow.py --json
 
   minimum-backend:
     runs-on: ubuntu-latest
@@ -56,7 +58,7 @@ jobs:
         with:
           python-version: "3.10"
       - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pip install "numpy<2" "scikit-learn==1.4.2" -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular
+      - run: python -m pip install "numpy<2" "scikit-learn==1.4.2" -e ./packages/pymplify-core -e ./packages/pymplify-text -e ./packages/pymplify-tabular -e ./packages/pymplify-analysis
       - run: python -m pytest
 
   distributions:
@@ -70,6 +72,7 @@ jobs:
       - run: python -m build packages/pymplify-core --outdir dist
       - run: python -m build packages/pymplify-text --outdir dist
       - run: python -m build packages/pymplify-tabular --outdir dist
+      - run: python -m build packages/pymplify-analysis --outdir dist
       - run: python -m twine check --strict dist/*
       - name: Install built wheels in a clean environment
         run: |
@@ -79,6 +82,8 @@ jobs:
           /tmp/pymplify-wheel-check/bin/python examples/text_vectors.py
           /tmp/pymplify-wheel-check/bin/python examples/tabular_scaling.py
           /tmp/pymplify-wheel-check/bin/python examples/adapter_catalog.py
+          /tmp/pymplify-wheel-check/bin/python examples/analyze_workflows.py
+          /tmp/pymplify-wheel-check/bin/python -m pymplify_analysis code examples/upstream_workflow.py --json
       - uses: actions/upload-artifact@v7
         with:
           name: distributions

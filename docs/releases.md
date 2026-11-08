@@ -23,30 +23,34 @@ python -m build packages/pymplify-core --outdir dist/pymplify-core
 python -m twine check dist/pymplify-core/*
 ```
 
-For text or tabular, change the path. Publish core before an adapter requiring its
-new contract version. Core and text are currently 0.2.0; tabular starts at 0.1.0.
+For another package, change the path. Publish core before an adapter requiring its
+new contract version. Core and text are currently 0.2.0; tabular and analysis
+start at 0.1.0.
 
 ## Artifact verification
 
-Install the wheel in a clean environment and run the example. To check all three
+Install the wheel in a clean environment and run the example. To check all four
 packages locally before their first publication:
 
 ```bash
-python -m build packages/pymplify-core --outdir dist/expansion
-python -m build packages/pymplify-text --outdir dist/expansion
-python -m build packages/pymplify-tabular --outdir dist/expansion
+python -m build packages/pymplify-core --outdir dist/automation
+python -m build packages/pymplify-text --outdir dist/automation
+python -m build packages/pymplify-tabular --outdir dist/automation
+python -m build packages/pymplify-analysis --outdir dist/automation
 python -m venv .venv-release
 # Linux/macOS; Windows: .venv-release\Scripts\python.exe
 # POSIX shell; PowerShell can pass each wheel path explicitly.
-.venv-release/bin/python -m pip install dist/expansion/*.whl
+.venv-release/bin/python -m pip install dist/automation/*.whl
 .venv-release/bin/python examples/text_vectors.py
 .venv-release/bin/python examples/tabular_scaling.py
 .venv-release/bin/python examples/adapter_catalog.py
+.venv-release/bin/python examples/analyze_workflows.py
+.venv-release/bin/python -m pymplify_analysis code examples/upstream_workflow.py --json
 ```
 
 Use a fresh output directory so older wheels cannot conflict with the versions
-being verified. CI explicitly installs all three wheels from local paths and runs
-the direct examples and catalog discovery example.
+being verified. CI explicitly installs all four wheels from local paths and runs
+the direct examples, catalog discovery, static analysis, and explicit validation examples.
 The default build also verifies that a wheel can be built from the sdist.
 
 ## Publishing
