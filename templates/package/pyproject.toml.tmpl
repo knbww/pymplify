@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "$distribution"
+version = "0.1.0"
+description = "A Pymplify adapter for $name."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Pymplify contributors"}]
+dependencies = ["pymplify-core>=0.1.0,<0.2"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+$module = ["py.typed"]

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pymplify-text"
+version = "0.1.0"
+description = "One-call text vectorization with access to the original scikit-learn model."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Pymplify contributors"}]
+keywords = ["ai", "ml", "nlp", "tfidf", "pymplify"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = ["pymplify-core>=0.1.0,<0.2", "scikit-learn>=1.4.2,<2"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pymplify_text = ["py.typed"]

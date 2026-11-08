@@ -1,0 +1,26 @@
+# Repository tooling only. Install individual distributions from packages/.
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["packages", "tests"]
+pythonpath = ["packages/pymplify-core/src", "packages/pymplify-text/src"]
+addopts = "--import-mode=importlib -ra --strict-markers --strict-config"
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["pymplify_core", "pymplify_text"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+exclude_also = ["if TYPE_CHECKING:"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.format]
+quote-style = "double"
